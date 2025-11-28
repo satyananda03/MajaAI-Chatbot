@@ -4,7 +4,7 @@ from app.schemas.evaluate_schema import EvaluateRequest, EvaluateResponse
 from app.core.config import settings
 import time
 evaluate_router = APIRouter()
-rag = RAGPipeline()
+rag = RAGPipeline(settings.PROMPT_VERSION)
 
 # @evaluate_router.post("/evaluate")
 # async def evaluate(request: EvaluateRequest) -> EvaluateResponse: 
