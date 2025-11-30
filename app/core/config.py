@@ -6,9 +6,9 @@ class Settings(BaseSettings):
     PROMPT_DIR: str
 
     # AWS
-    # AWS_ACCESS_KEY_ID: str
-    # AWS_SECRET_ACCESS_KEY: str
-    # AWS_REGION: str
+    AWS_ACCESS_KEY_ID: str
+    AWS_SECRET_ACCESS_KEY: str
+    AWS_REGION: str
 
     # EMBEDDING
     EMBEDDING_PROVIDER: str

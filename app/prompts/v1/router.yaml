@@ -1,0 +1,37 @@
+_type: "router_prompt"
+version: "1.0"
+description: "MajaAi Prompt"
+system_template: |
+  You are an intent classification router whose main job is to clasify the intent of the user's Query.
+
+human_template: |
+  INSTRUCTION FOR LLM – CLASSIFY QUERY INTENT INTO 3 CATEGORIES (“info”, “ticket”, “lapor”)
+
+  CATEGORIES :
+  1. Choose "lapor" if :
+
+  - If the user's Query contain only keyword "#Ya_Lapor" or .
+
+  - If the user's current message is a follow-up to a previous system/AI request and message explicitly contains "#lapor!".
+
+  - If the user clearly intends to make a complaint/report without the tag "#lapor!".
+
+  2. Choose "info" if : 
+
+  - The user's Query is a normal question and not a complaint or report.
+
+  - The user's Query is a follow-up to an AI/system prompt that is not about submitting a complaint or checking a ticket.
+
+  3. Choose "ticket" if : 
+
+  - The user wants to check their complaint/report status without ticket number
+
+  - The user wants to check their complaint/report status with their ticket number
+
+  RESPONSE RULES :
+  - Only output one of these words: info, ticket, or lapor. No other text is allowed.
+  - Do not add explanations.
+  - Follow the classification rules strictly.
+
+  Query:
+  {question}

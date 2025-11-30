@@ -1,16 +1,29 @@
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
-from app.modules.rag.rag_pipeline import RAGPipeline
 from app.schemas.chat_schema import ChatRequest
-from app.core.config import settings
+from app.modules.graph.workflow import workflow
 
 chat_router = APIRouter()
-rag = RAGPipeline(settings.PROMPT_VERSION)
 
 @chat_router.post("/chat")
 async def chat(request: ChatRequest):
-    pipeline = rag.chat()
     async def stream_answer():
-        async for chunk in pipeline.astream({"question": request.question}):
-            yield chunk
+        inputs = {"question": request.question}
+        async for event in workflow.astream_events(inputs, version="v2"):
+            kind = event["event"]
+            # Streaming token dari LLM (RAG Node)
+            if kind == "on_chat_model_stream":
+                node_name = event["metadata"].get("langgraph_node")
+                if node_name == "rag_node":
+                    chunk = event["data"]["chunk"]
+                    if hasattr(chunk, 'content'):
+                        content = chunk.content
+                        if isinstance(content, list) and len(content) > 0 and "text" in content[0]:
+                            yield content[0]["text"]
+            elif kind == "on_chain_end":
+                node_name = event["metadata"].get("langgraph_node")
+                if node_name in ["lapor_node", "ticket_node"]:
+                    output = event["data"].get("output")
+                    if output and 'answer' in output:
+                        pass 
     return StreamingResponse(stream_answer(), media_type="text/plain")

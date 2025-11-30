@@ -9,10 +9,10 @@ from app.services.prompt import prompt_template
 from app.utils.parser import document_parser, url_parser
 
 class RAGPipeline:
-    def __init__(self, prompt_version: str):
+    def __init__(self):
         self.retriever = ParentChildRetriever()
-        self.llm = get_llm()
-        self.prompt = prompt_template.get_prompt(prompt_version)
+        self.llm = get_llm(max_tokens=1000)
+        self.prompt = prompt_template.get_prompt("rag")
         self.output_parser = StrOutputParser()
 
     def chat(self):
@@ -53,5 +53,7 @@ class RAGPipeline:
         return eval_pipeline
 
     def evaluate_retriever(self):
-        eval_pipeline = RunnablePassthrough.assign(context = itemgetter("question") | self.retriever | document_parser)
+        eval_pipeline = RunnablePassthrough.assign(
+            context = itemgetter("question") | self.retriever | (lambda docs: [document_parser(docs)])
+        )
         return eval_pipeline
