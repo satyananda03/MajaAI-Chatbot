@@ -116,7 +116,6 @@ class ParentChildRetriever(RunnableSerializable):
                 p_doc.metadata["retrieval_score"] = rrf_score
                 p_doc.metadata["matched_child_content"] = child_ref.page_content
                 final_results.append(p_doc)
-        
         final_results.sort(key=lambda x: x.metadata.get("retrieval_score", 0), reverse=True)
         return final_results[:settings.MAX_RESULTS]
 

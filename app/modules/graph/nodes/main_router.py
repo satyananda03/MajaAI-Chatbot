@@ -12,9 +12,9 @@ router_llm = llm.with_structured_output(RouterOutput)
 router_prompt = prompt_template.get_prompt("router")
 router_pipeline = router_prompt | router_llm
 
-def main_router_node(state: ChatState) -> RouterOutput:
+def main_router_node(state: ChatState) -> ChatState:
     router_output = router_pipeline.invoke({"question": state["question"]})
-    state["category"] = router_output.category
+    state["category"] = router_output.category 
     return state
 
 def main_router_decision(state: ChatState) -> str:

@@ -30,7 +30,6 @@ human_template: |
 
   RESPONSE RULES :
   - Only output one of these words: info, ticket, or lapor. No other text is allowed.
-  - Do not add explanations.
   - Follow the classification rules strictly.
 
   Query:
