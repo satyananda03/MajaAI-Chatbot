@@ -16,7 +16,7 @@ app/
 data/ # tempat simpan chroma vector index, bm25 index, & stopwords
 ```
 
-- API documentation (Swagger UI) : localhost/8000/docs
+- API documentation (Swagger UI) : localhost:8000/docs
 
 ### Running API
 ```
