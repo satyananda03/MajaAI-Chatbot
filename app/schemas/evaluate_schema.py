@@ -4,6 +4,6 @@ class EvaluateRequest(BaseModel):
     question: str
 
 class EvaluateResponse(BaseModel):
-    # answer: str
+    answer: str
     context: List[str]
     latency: float
